@@ -10,7 +10,7 @@ const Footer = () => {
           <TbCoffee fontSize='35px' />
         </div>
         <div className='footer-details flex-auto'>
-          <p className='text-gray-600 text-sm'>Enjoying Pullweb?</p>
+          <p className='text-gray-600 text-sm'>Enjoying WebPeeker?</p>
           <p className='font-semibold text-lg'>Buy us a coffee!</p>
         </div>
         <div className='footer-arrow'>

@@ -1,6 +1,3 @@
-Here's a sample GitHub README for your **WebPeeker** Chrome extension:
-
-````markdown
 # WebPeeker
 
 WebPeeker is an innovative Chrome extension designed to enhance your browsing experience by extracting and providing essential information from websites. It captures valuable details such as fonts, colors, logos, and more, making it an invaluable tool for designers, developers, and anyone looking to gather design inspiration quickly.
@@ -24,11 +21,11 @@ WebPeeker is an innovative Chrome extension designed to enhance your browsing ex
 ## Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/yourusername/webpeeker.git
    cd webpeeker
    ```
-````
 
 2. **Load the extension in Chrome:**
 

@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "PagePeek",
+  "version": "1.0.0",
+  "description": "Extract and explore essential website details like fonts, colors, and logos for effortless design inspiration.",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "permissions": []
+}

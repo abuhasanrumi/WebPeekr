@@ -5,3 +5,32 @@
 body {
   @apply font-sans;
 }
+
+/* Custom scrollbar styles for webkit-based browsers */
+.scroll-container {
+  padding-right: 12px; /* Add padding to create space for the scrollbar */
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 12px; /* Width for vertical scrollbars */
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background-color: transparent; /* Transparent background for the track */
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.6
+  ); /* Darker color for the thumb, can adjust opacity */
+  border-radius: 100px; /* Rounded edges for the thumb */
+}
+
+/* For Firefox */
+.scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.6) transparent; /* Dark thumb with transparent track */
+}

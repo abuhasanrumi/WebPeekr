@@ -11,7 +11,7 @@ const Footer = () => {
         target='_blank'
         rel='noopener noreferrer'
         className='hover:underline'>
-        <div className='coffee-area flex justify-between items-center gap-3 bg-white rounded-xl border border-gray-300 p-4 cursor-pointer hover:shadow-md transition-shadow duration-300'>
+        <div className='coffee-area flex justify-between items-center gap-3 bg-white rounded-xl border border-gray-300 p-4 cursor-pointer transition-shadow duration-300'>
           <div className='coffee-icon'>
             <TbCoffee fontSize='35px' />
           </div>

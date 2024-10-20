@@ -29,6 +29,7 @@ function App() {
     'system-ui',
     'BlinkMacSystemFont',
     'Segoe UI',
+    'monospace',
     'Helvetica',
     'sans-serif'
   ]
@@ -57,16 +58,32 @@ function App() {
         (results) => {
           if (results && results[0]) {
             const { fonts, sizes, weights, colors, images } = results[0].result
-
+            console.log('sizes', sizes)
             // Update font details with families, sizes, and weights
             setFontDetails({
-              families: fonts
-                .filter((font) => !systemFonts.includes(font))
-                .map((font) => {
-                  const parts = font.split(',')
-                  return parts[0].replace(/["']/g, '').trim()
-                }),
-              sizes,
+              families: Array.from(
+                new Set(
+                  fonts
+                    .filter((font) => {
+                      const parts = font
+                        .split(',') // Split the font family string by commas
+                        .map((part) => part.replace(/["']/g, '').trim()) // Clean up font names
+
+                      // Check if any part of the font family matches a system font
+                      return !parts.some((part) => systemFonts.includes(part))
+                    })
+                    .map((font) => {
+                      const parts = font
+                        .split(',') // Split again after filtering out system fonts
+                        .map((part) => part.replace(/["']/g, '').trim())
+                      return parts[0] // Return the first non-system font
+                    })
+                )
+              ), // Ensure there are no duplicates using Set
+              sizes: sizes.filter((size) => {
+                const numericValue = parseFloat(size) // Convert size string to number
+                return numericValue >= 12 && numericValue <= 40 // Keep sizes within a reasonable range (12px - 40px)
+              }),
               weights
             })
 

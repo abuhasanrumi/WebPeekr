@@ -1,13 +1,20 @@
 {
   "manifest_version": 3,
-  "name": "Font Family Extractor",
+  "name": "WebPeeker",
   "version": "1.0",
   "permissions": ["activeTab", "scripting", "tabs"],
   "host_permissions": ["<all_urls>"],
   "action": {
-    "default_popup": "index.html"
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "icons/16.png",
+      "48": "icons/48.png",
+      "128": "icons/128.png"
+    }
   },
-  "background": {
-    "service_worker": "background.js"
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
   }
 }

@@ -10,7 +10,7 @@ const MetaDetails = ({ headerDetails }) => {
       <SectionTitle title='General' />
       <p className='text-xl mt-2 font-medium line'>{headerDetails?.title}</p>
 
-      <div className='url-section flex gap-2 items-center my-4'>
+      <div className='url-section flex gap-2 items-center mt-2 mb-4'>
         {headerDetails?.favIconUrl ? (
           <img
             src={headerDetails?.favIconUrl}

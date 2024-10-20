@@ -29,7 +29,7 @@ const WelcomeSection = ({ handleClick }) => {
 
       <button
         onClick={handleClick}
-        className='bg-primary w-full rounded-full text-white py-3'>
+        className='bg-primary w-full rounded-full text-white py-3 text-md uppercase'>
         Get all contents
       </button>
     </div>

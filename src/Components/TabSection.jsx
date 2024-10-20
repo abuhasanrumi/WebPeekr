@@ -3,7 +3,7 @@ import FontSection from './SharedElements/FontSection'
 import ColorSection from './SharedElements/ColorSection'
 import AssetSection from './SharedElements/AssetSection'
 
-const TabSection = ({ colorDetails, fontDetails }) => {
+const TabSection = ({ images, colorDetails, fontDetails }) => {
   const [tab, setTab] = useState('font')
   const tabs = ['Font', 'Color', 'Assets']
 
@@ -29,7 +29,7 @@ const TabSection = ({ colorDetails, fontDetails }) => {
       <div className='tab-data mt-6 overflow-y-scroll scroll-container h-[200px]'>
         {tab === 'font' && <FontSection fontDetails={fontDetails} />}
         {tab === 'color' && <ColorSection colorDetails={colorDetails} />}
-        {tab === 'assets' && <AssetSection />}
+        {tab === 'assets' && <AssetSection images={images} />}
       </div>
     </div>
   )

@@ -14,7 +14,7 @@ function App() {
     favIconUrl: ''
   })
 
-  // State to store font families, sizes, weights, and colors
+  // State to store font families, sizes, weights, colors, and images
   const [fontDetails, setFontDetails] = useState({
     families: [],
     sizes: [],
@@ -22,6 +22,16 @@ function App() {
   })
 
   const [colorDetails, setColorDetails] = useState([])
+  const [images, setImages] = useState([])
+
+  const systemFonts = [
+    '-apple-system',
+    'system-ui',
+    'BlinkMacSystemFont',
+    'Segoe UI',
+    'Helvetica',
+    'sans-serif'
+  ]
 
   // Function triggered when the button is clicked
   const handleClick = () => {
@@ -38,23 +48,23 @@ function App() {
         favIconUrl: currentTab?.favIconUrl
       })
 
-      // Inject getFontsAndColors function into the active tab
+      // Inject getFontsAndColorsAndImages function into the active tab
       chrome.scripting.executeScript(
         {
           target: { tabId: currentTab.id },
-          function: getFontsAndColors // Inject the function to extract styles
+          function: getFontsAndColorsAndImages
         },
         (results) => {
           if (results && results[0]) {
-            const { fonts, sizes, weights, colors } = results[0].result // Destructure results
+            const { fonts, sizes, weights, colors, images } = results[0].result
 
             // Update font details with families, sizes, and weights
             setFontDetails({
               families: fonts
-                .filter((font) => !font.startsWith('system-ui')) // Exclude system-ui fonts
+                .filter((font) => !systemFonts.includes(font))
                 .map((font) => {
-                  const parts = font.split(',') // Split the font family string by commas
-                  return parts[0].replace(/["']/g, '').trim() // Clean up font name
+                  const parts = font.split(',')
+                  return parts[0].replace(/["']/g, '').trim()
                 }),
               sizes,
               weights
@@ -62,6 +72,7 @@ function App() {
 
             // Update color details with hex codes
             setColorDetails(colors)
+            setImages(images)
           } else {
             console.error('No results found or script execution failed.')
           }
@@ -70,30 +81,59 @@ function App() {
     })
   }
 
-  // Function injected into the webpage to extract fonts, sizes, weights, and colors
-  function getFontsAndColors() {
-    const fonts = new Set() // To store unique font families
-    const sizes = new Set() // To store unique font sizes
-    const weights = new Set() // To store unique font weights
+  // Function injected into the webpage to extract fonts, sizes, weights, colors, and image URLs
+  function getFontsAndColorsAndImages() {
+    const fonts = new Set()
+    const sizes = new Set()
+    const weights = new Set()
     const colors = new Set()
-    const elements = document.querySelectorAll('*') // Select all elements on the page
+    const images = new Set()
+    const elements = document.querySelectorAll('*')
 
     elements.forEach((el) => {
-      const computedStyle = window.getComputedStyle(el) // Get the computed style of the element
-      fonts.add(computedStyle.fontFamily) // Add the font family to the set
-      sizes.add(computedStyle.fontSize) // Add the font size to the set
-      weights.add(computedStyle.fontWeight) // Add the font weight to the set
+      const computedStyle = window.getComputedStyle(el)
+      fonts.add(computedStyle.fontFamily)
+      sizes.add(computedStyle.fontSize)
+      weights.add(computedStyle.fontWeight)
       colors.add(computedStyle.color)
-      colors.add(computedStyle.backgroundColor ?? computedStyle.backgroundColor)
-      colors.add(computedStyle.borderColor ?? computedStyle.borderColor)
+      colors.add(computedStyle.backgroundColor)
+      colors.add(computedStyle.borderColor)
     })
 
-    // Return the fonts, sizes, and weights as arrays
+    // Get all images (img tags and background images)
+    const imgElements = document.querySelectorAll('img')
+
+    // Add all image URLs from img tags
+    imgElements.forEach((img) => {
+      if (img.src) {
+        images.add(img.src)
+      }
+    })
+
+    // Add background image URLs from elements with background images
+    elements.forEach((el) => {
+      const bgImage = window.getComputedStyle(el).backgroundImage
+      if (bgImage && bgImage !== 'none') {
+        const urlMatch = bgImage.match(/url\(["']?([^"']*)["']?\)/) // Extract URL from background-image CSS
+        if (urlMatch && urlMatch[1]) {
+          images.add(urlMatch[1])
+        }
+      }
+    })
+
+    // Collect all statically written SVGs
+    const svgElements = document.querySelectorAll('svg')
+    svgElements.forEach((svg) => {
+      images.add(svg.outerHTML)
+    })
+
+    // Return fonts, sizes, weights, colors, and image URLs as arrays
     return {
-      fonts: Array.from(fonts), // Convert the Set to an Array
+      fonts: Array.from(fonts),
       sizes: Array.from(sizes),
       weights: Array.from(weights),
-      colors: Array.from(colors).filter(Boolean)
+      colors: Array.from(colors).filter(Boolean),
+      images: Array.from(images)
     }
   }
 
@@ -106,7 +146,11 @@ function App() {
       {clicked ? (
         <>
           <MetaDetails headerDetails={headerDetails} />
-          <TabSection fontDetails={fontDetails} colorDetails={colorDetails} />
+          <TabSection
+            images={images}
+            fontDetails={fontDetails}
+            colorDetails={colorDetails}
+          />
           <Footer />
         </>
       ) : (

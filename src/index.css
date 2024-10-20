@@ -34,3 +34,8 @@ body {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.6) transparent; /* Dark thumb with transparent track */
 }
+
+.asset-svg svg {
+  max-width: 60px;
+  max-height: 60px;
+}

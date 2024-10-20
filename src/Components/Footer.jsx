@@ -4,7 +4,7 @@ import { IoIosArrowForward } from 'react-icons/io'
 
 const Footer = () => {
   return (
-    <div className='footer-section px-4 pb-4 '>
+    <div className='footer-section p-4 '>
       <div className='coffee-area rounded-xl border flex justify-between items-center gap-3 px-4 py-2 cursor-pointer'>
         <div className='coffee-icon'>
           <TbCoffee fontSize='35px' />

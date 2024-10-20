@@ -2,7 +2,8 @@
   "manifest_version": 3,
   "name": "Font Family Extractor",
   "version": "1.0",
-  "permissions": ["scripting", "activeTab"],
+  "permissions": ["activeTab", "scripting", "tabs"],
+  "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "index.html"
   },

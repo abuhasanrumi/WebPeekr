@@ -12,8 +12,8 @@ const WelcomeSection = ({ handleClick }) => {
       </p>
 
       <div className='how-to-section my-6 p-4 border rounded-xl'>
-        <p className='mb-3 font-semibold'>How to use:</p>
-        <ul className='list-disc pl-5 text-sm'>
+        <p className='mb-3 font-semibold text-[14px]'>How to use:</p>
+        <ul className='list-disc pl-5 text-[12px]'>
           <li className='mb-2'>
             Visit the webpage from which you want to extract content.
           </li>

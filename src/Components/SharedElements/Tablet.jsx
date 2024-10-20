@@ -27,13 +27,31 @@ const Tablet = ({ idx, text }) => {
         {text}
       </span>
 
-      {/* Checkmark only when copied */}
+      {/* Checkmark with scaling animation when copied */}
       <span
         className={`absolute inset-0 flex justify-center items-center transition-opacity duration-300 ${
           isCopied ? 'opacity-100' : 'opacity-0'
-        }`}>
+        }`}
+        style={{
+          animation: isCopied ? 'checkGrow 0.5s ease-in-out forwards' : 'none' // Animation for check icon
+        }}>
         ✔
       </span>
+
+      {/* CSS for animation */}
+      <style jsx>{`
+        @keyframes checkGrow {
+          0% {
+            transform: scale(0);
+          }
+          50% {
+            transform: scale(1.5);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+      `}</style>
     </div>
   )
 }

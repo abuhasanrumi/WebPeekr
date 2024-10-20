@@ -1,94 +1,37 @@
-# WebPeeker
+# WebPeekr
 
-WebPeeker is an innovative Chrome extension designed to enhance your browsing experience by extracting and providing essential information from websites. It captures valuable details such as fonts, colors, logos, and more, making it an invaluable tool for designers, developers, and anyone looking to gather design inspiration quickly.
-
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Development](#development)
-- [Contributing](#contributing)
-- [License](#license)
+**WebPeekr** is a powerful Chrome extension designed to help developers and designers analyze and interact with websites in real time. It extracts critical styling information such as fonts, sizes, weights, and colors from web pages. With WebPeekr, you can efficiently gather and manage web assets like images, SVGs, and more, making it a handy tool for anyone working with frontend design and development.
 
 ## Features
 
-- **Current Page Info:** Display extracted details from the current webpage, including fonts, color palettes, logos, and metadata.
-- **Quick Actions:** One-click extraction and copy functionality for easy access to design elements.
-- **Saved Data View:** Access previously extracted data with options to restore or delete.
-- **Settings Page:** Configure extraction preferences, including options for file formats.
+- **Font Inspector**: Extracts and lists all the fonts used on a web page, excluding system fonts (such as `-apple-system`, `system-ui`, etc.), while removing duplicates. It also provides insights into font sizes, weights, and color codes, giving you a detailed view of a site's typography.
+- **Asset Manager**: Categorizes and displays images, Base64-encoded images, and SVGs used on a web page. You can download these assets directly by simply clicking on them. The extension supports multiple formats such as `.jpg`, `.png`, `.gif`, `.webp`, and `.svg`.
+
+- **Visual Feedback**: On hovering over assets (images, SVGs, Base64 images), a download icon appears as an overlay to signal to the user that the asset can be downloaded. This improves user experience by making interactions intuitive.
+
+- **Popup Interface**: A user-friendly Chrome extension popup interface with easy-to-access features. The design includes a header with quick access to functionalities like font inspection and asset management.
 
 ## Installation
 
-1. **Clone the repository:**
-
-   ```bash
-   git clone https://github.com/yourusername/webpeeker.git
-   cd webpeeker
-   ```
-
-2. **Load the extension in Chrome:**
-
-   - Open Chrome and go to `chrome://extensions/`.
-   - Enable "Developer mode" (toggle in the top right corner).
-   - Click on "Load unpacked" and select the `webpeeker` folder.
-
-3. **Use the extension:** Click the WebPeeker icon in the Chrome toolbar to start extracting information from any webpage!
+1. Clone or download this repository.
+2. Go to `chrome://extensions/` in your Chrome browser.
+3. Enable "Developer mode" in the top-right corner.
+4. Click "Load unpacked" and select the directory where you downloaded the extension.
+5. The WebPeekr icon will appear in your browser toolbar.
 
 ## Usage
 
-1. **Extract Information:** Navigate to a webpage you want to analyze and click the WebPeeker icon. The extracted details will appear in the popup.
-2. **Save Extracted Data:** Use the save functionality to keep a record of important design elements for future reference.
-3. **Access Saved Data:** Click on the "Saved Data" option in the popup to view and manage previously extracted data.
+1. Navigate to any website you wish to inspect.
+2. Click the **WebPeekr** icon in your Chrome toolbar.
+3. In the popup, you'll be able to explore fonts, images, and SVGs used on the page.
+4. Hover over any image or SVG to reveal the download icon and click to save the asset to your device.
 
-## Development
+## Technologies
 
-### Getting Started
-
-To set up your development environment:
-
-1. Install [Node.js](https://nodejs.org/) if you haven't already.
-2. Install the required dependencies (if any) as specified in the `package.json`.
-
-### Code Structure
-
-- `manifest.json`: Contains metadata about the extension.
-- `popup.html`: The HTML structure of the popup interface.
-- `popup.js`: JavaScript code to handle user interactions and data extraction.
-- `styles.css`: Styles for the extension's UI.
-
-### Resources
-
-- [Chrome Extensions Documentation](https://developer.chrome.com/docs/extensions/mv3/getstarted/)
-- [Using Local Storage in Chrome Extensions](https://developer.chrome.com/docs/extensions/mv3/storage/)
+- **React**: For the user interface of the extension's popup.
+- **Chrome Extension API**: To interact with browser tabs, extract web assets, and manipulate web content.
+- **JavaScript**: For logic and functionalities like downloading assets and parsing font and image data.
 
 ## Contributing
 
-Contributions are welcome! If you have suggestions for improvements or features, please open an issue or submit a pull request.
-
-1. Fork the project.
-2. Create your feature branch:
-   ```bash
-   git checkout -b feature/YourFeature
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m 'Add some feature'
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature/YourFeature
-   ```
-5. Open a pull request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-Feel free to customize this README further based on your preferences and the specifics of your project!
-
-```
-
-```
+If you'd like to contribute to this project, feel free to fork the repository, make changes, and submit a pull request. Suggestions and feature requests are also welcome!

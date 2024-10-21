@@ -14,7 +14,6 @@ function App() {
     favIconUrl: ''
   })
 
-  // State to store font families, sizes, weights, colors, and images
   const [fontDetails, setFontDetails] = useState({
     families: [],
     sizes: [],
@@ -34,15 +33,13 @@ function App() {
     'sans-serif'
   ]
 
-  // Function triggered when the button is clicked
   const handleClick = () => {
     setClicked(true)
 
-    // Step 1: Get the active tab in the current window
+    // Get the active tab in the current window
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const currentTab = tabs[0] // Get the current active tab
 
-      // Update header details (tab title, URL, and favicon)
       setHeaderDetails({
         title: currentTab?.title,
         url: new URL(currentTab?.url).hostname,
@@ -66,28 +63,26 @@ function App() {
                   fonts
                     .filter((font) => {
                       const parts = font
-                        .split(',') // Split the font family string by commas
-                        .map((part) => part.replace(/["']/g, '').trim()) // Clean up font names
+                        .split(',')
+                        .map((part) => part.replace(/["']/g, '').trim())
 
-                      // Check if any part of the font family matches a system font
                       return !parts.some((part) => systemFonts.includes(part))
                     })
                     .map((font) => {
                       const parts = font
-                        .split(',') // Split again after filtering out system fonts
+                        .split(',')
                         .map((part) => part.replace(/["']/g, '').trim())
-                      return parts[0] // Return the first non-system font
+                      return parts[0]
                     })
                 )
-              ), // Ensure there are no duplicates using Set
+              ),
               sizes: sizes.filter((size) => {
-                const numericValue = parseFloat(size) // Convert size string to number
-                return numericValue >= 12 && numericValue <= 40 // Keep sizes within a reasonable range (12px - 40px)
+                const numericValue = parseFloat(size)
+                return numericValue >= 12 && numericValue <= 40
               }),
               weights
             })
 
-            // Update color details with hex codes
             setColorDetails(colors)
             setImages(images)
           } else {
@@ -117,10 +112,8 @@ function App() {
       colors.add(computedStyle.borderColor)
     })
 
-    // Get all images (img tags and background images)
     const imgElements = document.querySelectorAll('img')
 
-    // Add all image URLs from img tags
     imgElements.forEach((img) => {
       if (img.src) {
         images.add(img.src)
@@ -131,7 +124,7 @@ function App() {
     elements.forEach((el) => {
       const bgImage = window.getComputedStyle(el).backgroundImage
       if (bgImage && bgImage !== 'none') {
-        const urlMatch = bgImage.match(/url\(["']?([^"']*)["']?\)/) // Extract URL from background-image CSS
+        const urlMatch = bgImage.match(/url\(["']?([^"']*)["']?\)/)
         if (urlMatch && urlMatch[1]) {
           images.add(urlMatch[1])
         }
@@ -144,7 +137,6 @@ function App() {
       images.add(svg.outerHTML)
     })
 
-    // Return fonts, sizes, weights, colors, and image URLs as arrays
     return {
       fonts: Array.from(fonts),
       sizes: Array.from(sizes),

@@ -3,6 +3,7 @@ import SectionTitle from './SectionTitle'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { FaDownload } from 'react-icons/fa6'
+import JSZip from 'jszip'
 
 const AssetSection = ({ images, isLoading }) => {
   const validImageFormats = /\.(gif|jpg|jpeg|png|bmp|webp)$/i // List of valid image formats
@@ -58,8 +59,111 @@ const AssetSection = ({ images, isLoading }) => {
     URL.revokeObjectURL(url) // Clean up
   }
 
+  const downloadAllAssets = async () => {
+    console.log('Download All Assets clicked!')
+    // alert('Button clicked! Starting download...')
+    const zip = new JSZip()
+    const allAssets = [...validImageUrls, ...base64Images, ...svgs]
+
+    if (allAssets.length === 0) {
+      alert('No assets found to download!')
+      return
+    }
+
+    try {
+      // Process each asset and add to ZIP
+      for (let i = 0; i < allAssets.length; i++) {
+        const asset = allAssets[i]
+        console.log(`Processing asset ${i + 1}:`, asset)
+        let fileName = ''
+        let fileContent = null
+
+        if (svgPattern.test(asset)) {
+          // Handle SVG
+          fileName = `svg-${i + 1}.svg`
+          fileContent = asset
+          zip.file(fileName, fileContent)
+        } else if (base64Pattern.test(asset)) {
+          // Handle Base64 images
+          const extension =
+            asset.match(/data:image\/([^;]+);base64,/)?.[1] || 'png'
+          fileName = `base64-image-${i + 1}.${extension}`
+          fileContent = asset.split(',')[1] // Remove data:image/...;base64, prefix
+          zip.file(fileName, fileContent, { base64: true })
+        } else {
+          // Handle regular image URLs
+          try {
+            const response = await fetch(asset)
+            const blob = await response.blob()
+            const extension = asset.split('.').pop()?.split('?')[0] || 'jpg'
+            fileName = `image-${i + 1}.${extension}`
+            zip.file(fileName, blob)
+          } catch (error) {
+            console.warn(`Failed to fetch image ${asset}:`, error)
+            // Skip this asset if it can't be fetched
+            continue
+          }
+        }
+      }
+
+      // console.log('Generating ZIP file...')
+      // Generate and download the ZIP file
+      const zipBlob = await zip.generateAsync({ type: 'blob' })
+      // console.log('ZIP blob created, size:', zipBlob.size)
+
+      const filename = `webpeeker-assets-${
+        new Date().toISOString().split('T')[0]
+      }.zip`
+
+      // Use direct blob download (most reliable method)
+      // console.log('Triggering direct download...')
+      const url = URL.createObjectURL(zipBlob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+
+      // Clean up after a short delay
+      setTimeout(() => {
+        document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+        console.log('Download triggered successfully!')
+      }, 100)
+    } catch (error) {
+      console.error('Error creating ZIP file:', error)
+      // Fallback to individual downloads if ZIP creation fails
+      for (let i = 0; i < allAssets.length; i++) {
+        const asset = allAssets[i]
+        if (i > 0) {
+          await new Promise((resolve) => setTimeout(resolve, 500))
+        }
+        if (svgPattern.test(asset)) {
+          downloadSvg(asset)
+        } else {
+          downloadImage(asset)
+        }
+      }
+    }
+  }
+
   return (
     <div className='assets-data'>
+      {/* Download All Button */}
+      {(validImageUrls?.length > 0 ||
+        base64Images?.length > 0 ||
+        svgs?.length > 0) && (
+        <div className='mb-4'>
+          <button
+            onClick={downloadAllAssets}
+            className='w-full bg-primary text-white py-2 px-4 rounded-md font-medium hover:bg-primary/90 transition-colors duration-200 flex items-center justify-center gap-2'>
+            <FaDownload className='text-sm' />
+            Download All as ZIP (
+            {[...validImageUrls, ...base64Images, ...svgs].length})
+          </button>
+        </div>
+      )}
+
       {/* Render valid image URLs */}
       {validImageUrls?.length > 0 && (
         <>

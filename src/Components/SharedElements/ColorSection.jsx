@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import SectionTitle from './SectionTitle'
-import { FiCheck } from 'react-icons/fi' // Import a check icon from react-icons
+import { FiCheck, FiDownload } from 'react-icons/fi' // Import a check icon and download icon from react-icons
 import copy from 'copy-to-clipboard'
 import Color from 'color'
 
@@ -39,9 +39,48 @@ const ColorSection = ({ colorDetails }) => {
     setTimeout(() => setCopiedColor(null), 3000) // Reset after 2 seconds
   }
 
+  // Function to export colors as JSON
+  const exportColorsAsJSON = () => {
+    const colorsData = {
+      colors: processedColors.map((color) => ({
+        hex: color,
+        rgb: Color(color).rgb().array(),
+        hsl: Color(color)
+          .hsl()
+          .array()
+          .map((val) => Math.round(val * 100) / 100)
+      })),
+      totalCount: processedColors.length,
+      exportedAt: new Date().toISOString()
+    }
+
+    const jsonString = JSON.stringify(colorsData, null, 2)
+    const blob = new Blob([jsonString], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `webpeeker-colors-${
+      new Date().toISOString().split('T')[0]
+    }.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <div className='color-data'>
-      <SectionTitle title='Site Color' />
+      <div className='flex justify-between items-center'>
+        <SectionTitle title='Site Color' />
+        {processedColors.length > 0 && (
+          <button
+            onClick={exportColorsAsJSON}
+            className='bg-primary text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors duration-200 flex items-center gap-1'>
+            <FiDownload className='text-xs' />
+            Export JSON
+          </button>
+        )}
+      </div>
 
       <div className='colors-list grid grid-cols-3 gap-2 mt-2'>
         {processedColors.map((color) => (

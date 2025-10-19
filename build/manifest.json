@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "WebPeeker",
+  "name": "WebPeekr",
   "version": "1.0",
   "permissions": ["activeTab", "scripting", "tabs"],
   "host_permissions": ["<all_urls>"],
